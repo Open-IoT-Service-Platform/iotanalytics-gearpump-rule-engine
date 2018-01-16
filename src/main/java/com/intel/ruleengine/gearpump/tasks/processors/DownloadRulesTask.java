@@ -45,7 +45,6 @@ public class DownloadRulesTask extends RuleEngineTask {
     private static final String START_MSG = "start";
     private static final String CONTINUE_MSG = "continue";
     private final RulesApi rulesApi;
-    private static final int TRIGER_INTERVAL = 10; //in seconds
     private Map<String, List<Rule>> componentsRules;
 
     public DownloadRulesTask(TaskContext context, UserConfig userConfig) {
@@ -75,14 +74,12 @@ public class DownloadRulesTask extends RuleEngineTask {
         } catch (Exception e) {
             getLogger().error("Unknown error during rules downloading.", e);
         }
-        getContext().scheduleOnce(FiniteDuration.create(TRIGER_INTERVAL, TimeUnit.SECONDS), new SelfTrigger());
     }
 
     private Map<String, List<Rule>> getComponentsRules() throws InvalidDashboardResponseException {
         List<ComponentRulesResponse> componentsRules = rulesApi.getActiveComponentsRules();
         RuleParser ruleParser = new RuleParser(componentsRules);
         Map<String, List<Rule>> result = ruleParser.getComponentRules();
-
         return result;
     }
 
@@ -92,14 +89,6 @@ public class DownloadRulesTask extends RuleEngineTask {
 
     public static Processor getProcessor(UserConfig config, int parallelProcessorNumber) {
         return createProcessor(DownloadRulesTask.class, config, parallelProcessorNumber, TASK_NAME);
-    }
-
-    private class SelfTrigger extends scala.runtime.AbstractFunction0 {
-        @Override
-        public Object apply() {
-            self().tell(new Message(CONTINUE_MSG, now()), self());
-            return null;
-        }
     }
 
 }

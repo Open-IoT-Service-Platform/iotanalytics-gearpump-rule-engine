@@ -104,7 +104,6 @@ public class DownloadRulesTaskTest {
         downloadRulesTask.onNext(message);
 
         verify(taskContext, times(1)).output(expectedOutput);
-        verify(taskContext, times(1)).scheduleOnce(any(), any());
     }
 
     @Test
@@ -112,7 +111,6 @@ public class DownloadRulesTaskTest {
         when(rulesApi.getActiveComponentsRules()).thenThrow(InvalidDashboardResponseException.class);
         downloadRulesTask.onNext(message);
         verify(taskContext, never()).output(any());
-        verify(taskContext, times(1)).scheduleOnce(any(), any());
     }
 
     @Test
@@ -120,6 +118,5 @@ public class DownloadRulesTaskTest {
         when(rulesApi.getActiveComponentsRules()).thenThrow(Exception.class);
         downloadRulesTask.onNext(message);
         verify(taskContext, never()).output(any());
-        verify(taskContext, times(1)).scheduleOnce(any(), any());
     }
 }

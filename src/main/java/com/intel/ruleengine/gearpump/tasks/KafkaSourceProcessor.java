@@ -33,13 +33,14 @@ public class KafkaSourceProcessor {
     public static final String KAFKA_URI_PROPERTY = "KAFKA_URI";
     public static final String KAFKA_ZOOKEEPER_PROPERTY = "KAFKA_URI_ZOOKEEPER";
 
-    private static final String NAME = "KafkaSource";
+    private static String name;
 
     private final KafkaSource kafkaSource;
     private final ClientContext context;
 
-    public KafkaSourceProcessor(UserConfig userConfig) {
-        String topic = userConfig.getString(KAFKA_TOPIC_PROPERTY).get();
+    public KafkaSourceProcessor(UserConfig userConfig, String name, String topic) {
+        this.name = name;
+
         String zookeeperQuorum = userConfig.getString(KAFKA_ZOOKEEPER_PROPERTY).get();
         String serverUri = userConfig.getString(KAFKA_URI_PROPERTY).get();
 
@@ -61,6 +62,6 @@ public class KafkaSourceProcessor {
     }
 
     public Processor getKafkaSourceProcessor(int parallelProcessorNumber) {
-        return Processor.source(kafkaSource, parallelProcessorNumber, NAME, UserConfig.empty(), context.system());
+        return Processor.source(kafkaSource, parallelProcessorNumber, name, UserConfig.empty(), context.system());
     }
 }

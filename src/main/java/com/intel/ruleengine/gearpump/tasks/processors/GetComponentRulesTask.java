@@ -57,6 +57,8 @@ public class GetComponentRulesTask extends RuleEngineTask {
     public void onNext(Message message) {
         try {
             getLogger().info("GetRulesTask started");
+                        getLogger().warn("GetRulesTask started");
+
             observations = getInputMessage(message);
             sendObservations();
         } catch (InvalidMessageTypeException e) {

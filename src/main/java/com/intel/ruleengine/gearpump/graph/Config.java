@@ -27,7 +27,8 @@ class Config {
     private Boolean dashboard_strict_ssl;
     private String kafka_servers;
     private String kafka_zookeeper_quorum;
-    private String kafka_topic;
+    private String kafka_observations_topic;
+    private String kafka_rule_engine_topic;
     private String application_name;
     private String hadoop_security_authentication;
     private String krb_kdc;
@@ -38,12 +39,20 @@ class Config {
     private String krb_regionserver_principal;
 
 
-    public String getKafka_topic() {
-        return kafka_topic;
+    public String getKafka_observations_topic() {
+        return kafka_observations_topic;
     }
 
-    public void setKafka_topic(String kafka_topic) {
-        this.kafka_topic = kafka_topic;
+    public void setKafka_observations_topic(String kafka_topic) {
+        this.kafka_observations_topic = kafka_topic;
+    }
+
+    public String getKafka_rule_engine_topic() {
+        return kafka_rule_engine_topic;
+    }
+
+    public void setKafka_rule_engine_topic(String kafka_topic) {
+        this.kafka_rule_engine_topic = kafka_topic;
     }
 
     public String getApplication_name() {
@@ -170,7 +179,8 @@ class Config {
     public String toString() {
         String sep = ", ";
         StringBuilder builder = new StringBuilder()
-                .append("kafka_topic: ").append(getKafka_topic()).append(sep)
+                .append("kafka_observations_topic: ").append(getKafka_observations_topic()).append(sep)
+                .append("kafka_rule_engine_topic: ").append(getKafka_rule_engine_topic()).append(sep)
                 .append("application_name: ").append(getApplication_name()).append(sep)
                 .append("zookeeper_hbase_quorum: ").append(getZookeeper_hbase_quorum()).append(sep)
                 .append("hbase_table_prefix: ").append(getHbase_table_prefix()).append(sep)

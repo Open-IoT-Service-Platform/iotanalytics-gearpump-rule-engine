@@ -41,7 +41,7 @@ class VcapServices(Vcap):
 
         self.__parse_dashboard_url(ups)
         self.__gather_rule_engine_token(ups)
-        self.__gather_topic_name(ups)
+        self.__gather_topics_names(ups)
         self.__parse_gearpump_credentials()
         self.__parse_kerberos_hbase_properties(ups)
 
@@ -68,9 +68,10 @@ class VcapServices(Vcap):
             .replace("-", "_") \
             .replace(".", "_")
 
-    def __gather_topic_name(self, ups):
+    def __gather_topics_names(self, ups):
         kafka_ups = self.__get_ups_by_name(ups, 'kafka-ups')
-        self.topic_name = kafka_ups['credentials']['topic']
+        self.observations_topic_name = kafka_ups['credentials']['topics']['observations']
+        self.rule_engine_topic_name = kafka_ups['credentials']['topics']['rule_engine']
 
     def __parse_gearpump_credentials(self):
         self.gearpump_credentials = self.json['gearpump'][0]['credentials']

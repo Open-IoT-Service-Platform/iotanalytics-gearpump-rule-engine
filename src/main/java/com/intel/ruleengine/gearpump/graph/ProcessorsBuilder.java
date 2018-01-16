@@ -1,6 +1,7 @@
 package com.intel.ruleengine.gearpump.graph;
 
-import com.intel.ruleengine.gearpump.tasks.KafkaSourceProcessor;
+import com.intel.ruleengine.gearpump.tasks.KafkaSourceObservationsProcessor;
+import com.intel.ruleengine.gearpump.tasks.KafkaSourceRulesUpdateProcessor;
 import com.intel.ruleengine.gearpump.tasks.processors.*;
 import io.gearpump.cluster.UserConfig;
 import io.gearpump.streaming.javaapi.Processor;
@@ -32,8 +33,12 @@ class ProcessorsBuilder {
         this.parallelismDefinition = parallelismDefinition;
     }
 
-    public Processor getKafkaSource() {
-        return new KafkaSourceProcessor(userConfig).getKafkaSourceProcessor(parallelismDefinition.getKafkaSourceProcessorsNumber());
+    public Processor getKafkaSourceRulesUpdate() {
+        return new KafkaSourceRulesUpdateProcessor(userConfig).getKafkaSourceProcessor(parallelismDefinition.getKafkaSourceProcessorsNumber());
+    }
+
+     public Processor getKafkaSourceObservations() {
+        return new KafkaSourceObservationsProcessor(userConfig).getKafkaSourceProcessor(parallelismDefinition.getKafkaSourceProcessorsNumber());
     }
 
     public Processor getSendAlertsProcessor() {

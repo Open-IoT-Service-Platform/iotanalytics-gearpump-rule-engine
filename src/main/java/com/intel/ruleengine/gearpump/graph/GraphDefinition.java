@@ -24,7 +24,8 @@ class GraphDefinition {
 
     private final Map<Processor, List<Processor>> definition;
 
-    private final Processor kafkaSourceProcessor;
+    private final Processor kafkaSourceObservationsProcessor;
+    private final Processor kafkaSourceRulesUpdateProcessor;
 
     private final Processor checkObservationInRules;
     private final Processor sendAlerts;
@@ -43,7 +44,8 @@ class GraphDefinition {
         persistComponentAlerts = processorsBuilder.getPersistComponentAlertsProccesor();
         checkRules = processorsBuilder.getCheckRulesProcessor();
         getRulesForComponent = processorsBuilder.getRulesForComponentProcessor();
-        kafkaSourceProcessor = processorsBuilder.getKafkaSource();
+        kafkaSourceObservationsProcessor = processorsBuilder.getKafkaSourceObservations();
+        kafkaSourceRulesUpdateProcessor = processorsBuilder.getKafkaSourceRulesUpdate();
         persistObservation = processorsBuilder.getPersistObservationProcessor();
         this.definition = new HashMap<>();
         buildDefinition();
@@ -54,16 +56,16 @@ class GraphDefinition {
     }
 
     private void buildDefinition() {
-        definition.put(kafkaSourceProcessor, Arrays.asList(getRulesForComponent));
+        definition.put(kafkaSourceObservationsProcessor, Arrays.asList(getRulesForComponent));
         definition.put(getRulesForComponent, Arrays.asList(persistObservation));
         definition.put(persistObservation, Arrays.asList(checkObservationInRules));
-
         definition.put(checkObservationInRules, Arrays.asList(persistComponentAlerts));
         definition.put(persistComponentAlerts, Arrays.asList(checkRules));
-
         definition.put(checkRules, Arrays.asList(sendAlerts));
+        definition.put(sendAlerts, new ArrayList<>());
+
+        definition.put(kafkaSourceRulesUpdateProcessor, Arrays.asList(downloadRulesTask));
         definition.put(downloadRulesTask, Arrays.asList(persistRulesTask));
         definition.put(persistRulesTask, new ArrayList<>());
-        definition.put(sendAlerts, new ArrayList<>());
     }
 }
