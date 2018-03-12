@@ -2,6 +2,8 @@ FROM ubuntu
 
 RUN apt-get update && apt-get install curl default-jre unzip python-setuptools -y
 
+WORKDIR /gearpump
+
 RUN curl --location --retry 3 --insecure https://github.com/gearpump/gearpump/releases/download/0.8.0/gearpump-2.11-0.8.0.zip -o tmp.zip && unzip -q tmp.zip && rm tmp.zip && chmod +x gearpump-2.11-0.8.0/bin/*
 
 ADD gear.conf gearpump-2.11-0.8.0/conf/gear.conf
