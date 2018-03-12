@@ -15,6 +15,7 @@
 
 import argparse
 import os
+import re
 
 import time
 
@@ -38,7 +39,9 @@ def main():
 
     print 'Submitting application - %s into gearpump ...' % rule_engine_jar_name
 
-    gearpump_api.submit_app(filename=rule_engine_jar_name, app_name=config['application_name'],
+
+    app_name = re.sub('[^a-zA-Z]+', '', config['application_name'])
+    gearpump_api.submit_app(filename=rule_engine_jar_name, app_name=app_name,
                              gearpump_app_config=config, force=True)
 
     if not args.local:
