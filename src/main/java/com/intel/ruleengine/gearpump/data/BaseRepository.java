@@ -26,6 +26,8 @@ import org.apache.hadoop.hbase.client.Admin;
 import org.apache.hadoop.hbase.client.Connection;
 import org.apache.hadoop.hbase.client.Table;
 
+import java.util.concurrent.Semaphore;
+
 import javax.annotation.PreDestroy;
 import java.io.IOException;
 
@@ -35,6 +37,7 @@ public abstract class BaseRepository {
     private final String zkQuorum;
     private final UserConfig userConfig;
     private Connection hbaseConnection;
+    private static Semaphore mutex = new Semaphore(1);
 
     public BaseRepository(UserConfig userConfig) {
         String tablePrefix = userConfig.getString(HbaseProperties.TABLE_PREFIX).get();
@@ -45,6 +48,7 @@ public abstract class BaseRepository {
 
     public void createTable() throws IOException {
         try (Admin admin = getHbaseAdmin()) {
+            mutex.acquire();
             if (!admin.tableExists(getTableName())) {
                 HTableDescriptor table = new HTableDescriptor(getTableName());
                 for (String family : HbaseValues.TABLES_COLUMN_FAMILIES.get(getTableNameWithoutPrefix())) {
@@ -53,6 +57,9 @@ public abstract class BaseRepository {
                 admin.createTable(table);
                 addCoprocessor(admin, table);
             }
+            mutex.release();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
