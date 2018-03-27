@@ -54,4 +54,12 @@ class ParallelismDefinition {
     public int getPersistObservationProcessorsNumber() {
         return 1;
     }
+
+    public int getHeartbeatProcessorsNumber() {
+        return 1;
+    }
+
+    public int getKafkaSinkProcessorsNumber() {
+        return 1;
+    }
 }

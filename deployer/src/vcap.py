@@ -72,6 +72,8 @@ class VcapServices(Vcap):
         kafka_ups = self.__get_ups_by_name(ups, 'kafka-ups')
         self.observations_topic_name = kafka_ups['credentials']['topics']['observations']
         self.rule_engine_topic_name = kafka_ups['credentials']['topics']['rule_engine']
+        self.heartbeat_topic_name = kafka_ups['credentials']['topics']['heartbeat']['name']
+        self.heartbeat_interval = kafka_ups['credentials']['topics']['heartbeat']['interval']
 
     def __parse_gearpump_credentials(self):
         self.gearpump_credentials = self.json['gearpump'][0]['credentials']

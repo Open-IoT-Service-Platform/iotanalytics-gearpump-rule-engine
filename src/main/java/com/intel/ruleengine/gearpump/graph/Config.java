@@ -29,6 +29,8 @@ class Config {
     private String kafka_zookeeper_quorum;
     private String kafka_observations_topic;
     private String kafka_rule_engine_topic;
+    private String kafka_heartbeat_topic;
+    private Integer kafka_heartbeat_interval;
     private String application_name;
     private String hadoop_security_authentication;
     private String krb_kdc;
@@ -53,6 +55,22 @@ class Config {
 
     public void setKafka_rule_engine_topic(String kafka_topic) {
         this.kafka_rule_engine_topic = kafka_topic;
+    }
+
+    public String getKafka_heartbeat_topic() {
+        return kafka_heartbeat_topic;
+    }
+
+    public void setKafka_heartbeat_topic(String kafka_topic) {
+        this.kafka_heartbeat_topic = kafka_topic;
+    }
+
+    public Integer getKafka_heartbeat_interval() {
+        return kafka_heartbeat_interval;
+    }
+
+    public void setKafka_heartbeat_topic(Integer interval) {
+        this.kafka_heartbeat_interval = interval;
     }
 
     public String getApplication_name() {
@@ -181,6 +199,8 @@ class Config {
         StringBuilder builder = new StringBuilder()
                 .append("kafka_observations_topic: ").append(getKafka_observations_topic()).append(sep)
                 .append("kafka_rule_engine_topic: ").append(getKafka_rule_engine_topic()).append(sep)
+                .append("kafka_heartbeat_topic: ").append(getKafka_heartbeat_topic()).append(sep)
+                .append("kafka_heartbeat_interval: ").append(getKafka_heartbeat_interval()).append(sep)
                 .append("application_name: ").append(getApplication_name()).append(sep)
                 .append("zookeeper_hbase_quorum: ").append(getZookeeper_hbase_quorum()).append(sep)
                 .append("hbase_table_prefix: ").append(getHbase_table_prefix()).append(sep)

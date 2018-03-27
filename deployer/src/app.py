@@ -21,6 +21,7 @@ import time
 import cloudfoundry_bridge
 from gearpump_api import GearpumpApi
 
+from kafka import KafkaConsumer
 
 def main():
 
@@ -31,15 +32,21 @@ def main():
     cloud_bridge = cloudfoundry_bridge.CloudfoundryBridge()
 
     config = cloud_bridge.build_config(local=args.local)
-
+   
     gearpump_api = GearpumpApi(uri=cloud_bridge.gearpump_dashboard_url, credentials=cloud_bridge.gearpump_credentials)
 
     rule_engine_jar_name = os.environ['RULE_ENGINE_PACKAGE_NAME']
 
-    print 'Submitting application - %s into gearpump ...' % rule_engine_jar_name
+    consumer = KafkaConsumer(config['kafka_heartbeat_topic'], bootstrap_servers=config['kafka_servers'], auto_offset_reset='latest')
+        
+    for message in consumer:
+        if message.value == "dashboard":
 
-    gearpump_api.submit_app(filename=rule_engine_jar_name, app_name=config['application_name'],
-                             gearpump_app_config=config, force=True)
+            print 'Submitting application - %s into gearpump ...' % rule_engine_jar_name
+
+            gearpump_api.submit_app(filename=rule_engine_jar_name, app_name=config['application_name'], gearpump_app_config=config, force=True)
+
+            break
 
     if not args.local:
         while True:

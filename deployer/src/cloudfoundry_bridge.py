@@ -50,6 +50,8 @@ class CloudfoundryBridge(object):
             "kafka_servers": self._vcap_services.kafka_servers,
             "kafka_observations_topic": self._vcap_services.observations_topic_name,
             "kafka_rule_engine_topic": self._vcap_services.rule_engine_topic_name,
+            "kafka_heartbeat_topic": self._vcap_services.heartbeat_topic_name,
+            "kafka_heartbeat_interval": self._vcap_services.heartbeat_interval,
             "kafka_zookeeper_quorum": kafka_zookeeper_quorum,
             "application_name": "rule_engine_" + self._vcap_services.dashboard_url_normalized_for_gearpump,
             "dashboard_strict_ssl": self._vcap_services.dashboard_strict_ssl,

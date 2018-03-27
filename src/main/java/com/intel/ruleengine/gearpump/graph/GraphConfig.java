@@ -7,6 +7,8 @@ import com.intel.ruleengine.gearpump.data.KerberosProperties;
 import com.intel.ruleengine.gearpump.tasks.KafkaSourceProcessor;
 import com.intel.ruleengine.gearpump.tasks.KafkaSourceObservationsProcessor;
 import com.intel.ruleengine.gearpump.tasks.KafkaSourceRulesUpdateProcessor;
+import com.intel.ruleengine.gearpump.tasks.KafkaSinkHeartbeatProcessor;
+import com.intel.ruleengine.gearpump.tasks.processors.HeartbeatTask;
 
 import com.intel.ruleengine.gearpump.util.LogHelper;
 import io.gearpump.cluster.UserConfig;
@@ -46,6 +48,8 @@ public class GraphConfig {
                 .withBoolean(DashboardConfig.DASHBOARD_STRICT_SSL_VERIFICATION, externalConfig.getDashboard_strict_ssl())
                 .withString(KafkaSourceObservationsProcessor.KAFKA_TOPIC_PROPERTY, externalConfig.getKafka_observations_topic())
                 .withString(KafkaSourceRulesUpdateProcessor.KAFKA_TOPIC_PROPERTY, externalConfig.getKafka_rule_engine_topic())
+                .withString(KafkaSinkHeartbeatProcessor.KAFKA_TOPIC_PROPERTY, externalConfig.getKafka_heartbeat_topic())
+                .withInt(HeartbeatTask.KAFKA_HEARTBEAT_INTERVAL_PROPERTY, externalConfig.getKafka_heartbeat_interval())
                 .withString(KafkaSourceProcessor.KAFKA_URI_PROPERTY, externalConfig.getKafka_servers())
                 .withString(KafkaSourceProcessor.KAFKA_ZOOKEEPER_PROPERTY, externalConfig.getKafka_zookeeper_quorum())
                 .withString(HbaseProperties.AUTHENTICATION_METHOD, externalConfig.getHadoop_security_authentication())

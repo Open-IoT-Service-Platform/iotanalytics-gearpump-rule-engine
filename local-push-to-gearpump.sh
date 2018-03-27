@@ -17,4 +17,5 @@
 source target/classes/resources/version.properties &&
 export RULE_ENGINE_PACKAGE_NAME=gearpump-rule-engine-${VERSION}-jar-with-dependencies.jar &&
 cd deployer &&
+pip install kafka-python && 
 python src/app.py --local

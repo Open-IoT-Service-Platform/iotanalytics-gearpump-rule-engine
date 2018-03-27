@@ -2,6 +2,7 @@ package com.intel.ruleengine.gearpump.graph;
 
 import com.intel.ruleengine.gearpump.tasks.KafkaSourceObservationsProcessor;
 import com.intel.ruleengine.gearpump.tasks.KafkaSourceRulesUpdateProcessor;
+import com.intel.ruleengine.gearpump.tasks.KafkaSinkHeartbeatProcessor;
 import com.intel.ruleengine.gearpump.tasks.processors.*;
 import io.gearpump.cluster.UserConfig;
 import io.gearpump.streaming.javaapi.Processor;
@@ -37,7 +38,7 @@ class ProcessorsBuilder {
         return new KafkaSourceRulesUpdateProcessor(userConfig).getKafkaSourceProcessor(parallelismDefinition.getKafkaSourceProcessorsNumber());
     }
 
-     public Processor getKafkaSourceObservations() {
+    public Processor getKafkaSourceObservations() {
         return new KafkaSourceObservationsProcessor(userConfig).getKafkaSourceProcessor(parallelismDefinition.getKafkaSourceProcessorsNumber());
     }
 
@@ -72,4 +73,13 @@ class ProcessorsBuilder {
     public Processor getPersistObservationProcessor() {
         return PersistObservationTask.getProcessor(userConfig, parallelismDefinition.getPersistObservationProcessorsNumber());
     }
+
+    public Processor getHeartbeatProcessor() {
+        return HeartbeatTask.getProcessor(userConfig, parallelismDefinition.getHeartbeatProcessorsNumber());
+    }
+    
+    public Processor getKafkaSinkHeartbeat() {
+        return new KafkaSinkHeartbeatProcessor(userConfig).getKafkaSinkProcessor(parallelismDefinition.getKafkaSinkProcessorsNumber());
+    }
+    
 }

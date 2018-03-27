@@ -26,6 +26,7 @@ class GraphDefinition {
 
     private final Processor kafkaSourceObservationsProcessor;
     private final Processor kafkaSourceRulesUpdateProcessor;
+    private final Processor kafkaSinkHeartbeatProcessor;
 
     private final Processor checkObservationInRules;
     private final Processor sendAlerts;
@@ -35,6 +36,7 @@ class GraphDefinition {
     private final Processor checkRules;
     private final Processor getRulesForComponent;
     private final Processor persistObservation;
+    private final Processor heartbeatTask;
 
     GraphDefinition(ProcessorsBuilder processorsBuilder) {
         sendAlerts = processorsBuilder.getSendAlertsProcessor();
@@ -47,6 +49,8 @@ class GraphDefinition {
         kafkaSourceObservationsProcessor = processorsBuilder.getKafkaSourceObservations();
         kafkaSourceRulesUpdateProcessor = processorsBuilder.getKafkaSourceRulesUpdate();
         persistObservation = processorsBuilder.getPersistObservationProcessor();
+        heartbeatTask = processorsBuilder.getHeartbeatProcessor();
+        kafkaSinkHeartbeatProcessor = processorsBuilder.getKafkaSinkHeartbeat();
         this.definition = new HashMap<>();
         buildDefinition();
     }
@@ -67,5 +71,8 @@ class GraphDefinition {
         definition.put(kafkaSourceRulesUpdateProcessor, Arrays.asList(downloadRulesTask));
         definition.put(downloadRulesTask, Arrays.asList(persistRulesTask));
         definition.put(persistRulesTask, new ArrayList<>());
+
+        definition.put(heartbeatTask, Arrays.asList(kafkaSinkHeartbeatProcessor));
+        definition.put(kafkaSinkHeartbeatProcessor, new ArrayList<>());
     }
 }

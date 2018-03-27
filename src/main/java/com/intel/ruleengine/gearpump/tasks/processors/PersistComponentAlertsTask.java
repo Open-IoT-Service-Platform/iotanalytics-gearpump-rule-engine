@@ -66,7 +66,7 @@ public class PersistComponentAlertsTask extends RuleEngineTask {
             RuleComponentsStorageManager ruleComponentsStorageManager = new RuleComponentsStorageManager(ruleConditionsRepository, checkedRulesWithObservation);
             ruleComponentsStorageManager.persistBasicAndStatisticsRuleComponents();
 
-            getLogger().info("Sendin message to check rullesss");
+            getLogger().info("Sending message to check rullesss");
             getMessageSender().send(checkedRulesWithObservation);
 
         } catch (InvalidMessageTypeException e) {
