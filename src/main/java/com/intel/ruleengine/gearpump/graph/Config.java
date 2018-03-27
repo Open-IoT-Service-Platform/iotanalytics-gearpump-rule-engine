@@ -30,7 +30,7 @@ class Config {
     private String kafka_observations_topic;
     private String kafka_rule_engine_topic;
     private String kafka_heartbeat_topic;
-    private Integer kafka_heartbeat_interval;
+    private int kafka_heartbeat_interval;
     private String application_name;
     private String hadoop_security_authentication;
     private String krb_kdc;
@@ -65,11 +65,11 @@ class Config {
         this.kafka_heartbeat_topic = kafka_topic;
     }
 
-    public Integer getKafka_heartbeat_interval() {
+    public int getKafka_heartbeat_interval() {
         return kafka_heartbeat_interval;
     }
 
-    public void setKafka_heartbeat_topic(Integer interval) {
+    public void setKafka_heartbeat_interval(int interval) {
         this.kafka_heartbeat_interval = interval;
     }
 
