@@ -4,6 +4,9 @@ RUN curl --location --retry 3 --insecure https://github.com/gearpump/gearpump/re
 
 ADD gear.conf gearpump-2.11-0.8.0/conf/gear.conf
 
+RUN sed -i -e "s/gearpump.root.logger=RollingFileAppender/gearpump.root.logger=RollingFileAppender,console/g" gearpump-2.11-0.8.0/conf/log4j.properties
+RUN sed -i -e "s/gearpump.application.logger=ApplicationLogAppender/gearpump.application.logger=ApplicationLogAppender,console/g" gearpump-2.11-0.8.0/conf/log4j.properties
+
 EXPOSE 8090
 
 ENTRYPOINT gearpump-2.11-0.8.0/bin/local & gearpump-2.11-0.8.0/bin/services
