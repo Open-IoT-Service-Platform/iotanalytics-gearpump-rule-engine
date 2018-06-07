@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright (c) 2016 Intel Corporation
+# Copyright (c) 2016-2018 Intel Corporation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,8 +14,7 @@
 # limitations under the License.
 #
 
-mvn clean install &&
 source target/classes/resources/version.properties &&
 export RULE_ENGINE_PACKAGE_NAME=gearpump-rule-engine-${VERSION}-jar-with-dependencies.jar &&
 cd deployer &&
-python src/app.py --local
+python src/app.py
