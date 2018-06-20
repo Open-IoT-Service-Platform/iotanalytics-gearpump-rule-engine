@@ -18,22 +18,31 @@ Gearpump must run locally, port number is read from $GEARPUMP,
 which stores a whole URL.
 """
 import os
+import time
+
+import kafka
 
 from gearpump_api import GearpumpApi
-from kafka import KafkaConsumer
-
 import cloudfoundry_bridge
+
+KAFKA_BROKER_TIMEOUT = 300
 
 def wait_for_frontend():
     """Wait for OISP frontend hearbeat."""
     kafka_server = os.environ["KAFKA"]
     heartbeat_topic = os.environ["KAFKA_HEARTBEAT_TOPIC"]
-    consumer = KafkaConsumer(heartbeat_topic, bootstrap_servers=kafka_server,
-                             auto_offset_reset='latest')
+
+    for _ in range(KAFKA_BROKER_TIMEOUT):
+        try:
+            consumer = kafka.KafkaConsumer(heartbeat_topic, bootstrap_servers=kafka_server,
+                                           auto_offset_reset='latest')
+        except kafka.errors.NoBrokersAvailable:
+            time.sleep(1)
 
     for message in consumer:
         # Frontend heartbeat message is dashboard for historical reasons
         if message.value == "dashboard":
+            print("Time, dashboard message ts:", time.time(), message.timestamp)
             break
 
     print("Frontend is up")
