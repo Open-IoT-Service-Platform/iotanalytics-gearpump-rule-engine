@@ -66,7 +66,7 @@ class VcapServices(Vcap):
             .replace("http://", "") \
             .replace("https://", "") \
             .replace("-", "_") \
-            .replace(".", "_")
+            .replace(".", "_").split(":")[0]
 
     def __gather_topics_names(self, ups):
         kafka_ups = self.__get_ups_by_name(ups, 'kafka-ups')
