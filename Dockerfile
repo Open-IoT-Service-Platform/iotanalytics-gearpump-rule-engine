@@ -29,7 +29,7 @@ EXPOSE 8090
 RUN easy_install poster
 RUN easy_install requests
 RUN easy_install pip
-RUN pip install kafka-python
+RUN pip install kafka-python oisp
 
 ADD . /app
 COPY --from=0 /app/ /app
