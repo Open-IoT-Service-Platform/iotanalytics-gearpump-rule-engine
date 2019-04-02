@@ -1,6 +1,6 @@
-FROM jamesdbloom/docker-java8-maven
+FROM maven:3.6.0-jdk-8-alpine
 
-RUN apt-get update -qq && apt-get install -y build-essential python-setuptools
+RUN apk update && apk add --update alpine-sdk py-setuptools
 
 ADD pom.xml /app/pom.xml
 ADD src /app/src
